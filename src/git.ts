@@ -114,13 +114,13 @@ export function shouldProceed(tagPrerelease: boolean) {
     return false;
   }
 
-  if (github.context.action != 'closed' && !tagPrerelease) {
+  const pr = getCurrentPR()
+
+  if (!pr.merged && !tagPrerelease) {
     console.log(`This PR is still open, skipping tagging`);
     console.log(`To tag PRs that are still open, set the 'tag-prerelease' input to true`);
     return false;
   }
-
-  const pr = getCurrentPR()
 
   if (github.context.action == 'closed' && !pr.merged) {
     console.log(`This PR is closed, but not merged, skipping tagging`);
