@@ -1,7 +1,7 @@
 import * as core from '@actions/core';
 import * as github from '@actions/github';
 import { Versioner, Settings } from './versioner';
-import { getTags, getBranchName, getLabels, tagNewVersion, shouldProceed } from './git';
+import { getTags, getBranchName, getLabels, tagNewVersion, shouldProceed, isPrerelease } from './git';
 
 function buildSettings(labels: string[], prefix: string, branch: string, tagPrerelease: boolean): Settings {
   const settings = {} as Settings;
@@ -12,7 +12,7 @@ function buildSettings(labels: string[], prefix: string, branch: string, tagPrer
     settings.minor = true;
   }
 
-  if (tagPrerelease) {
+  if (tagPrerelease && isPrerelease()) {
     settings.suffix = branch;
   }
 

@@ -30,6 +30,11 @@ function getCurrentPR() {
   return pr.pull_request
 }
 
+export function isPrerelease() {
+  const pr = getCurrentPR()
+  return !(pr.merged && pr.base.repo.default_branch === pr.base.ref)
+}
+
 export function getBranchName() {
   const pr = getCurrentPR()
   return pr.head.ref
