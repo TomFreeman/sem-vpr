@@ -1,6 +1,13 @@
 name: "units-test"
 on:
   pull_request:
+    types:
+      - opened
+      - closed
+      - reopened
+      - synchronize
+      - labeled
+
   push:
     branches:
       - main
@@ -20,6 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    - run: npm ci
     - uses: ./
       with:
-        milliseconds: 1000
+        github-token: ${{ secrets.token }}

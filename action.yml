@@ -1,13 +1,18 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'Pull Request Semver tagger'
+description: 'Tags a pull request with a semver version'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  github-token:  # id of input
+    description: 'The token to use to write tags'
     required: true
-    default: '1000'
-outputs:
-  time: # output will be available to future steps
-    description: 'The current time after waiting'
+    default: undefined
+  prefix:
+    description: 'The prefix to use for the tag'
+    required: false
+    default: 'v'
+  tag-prerelease:
+    description: 'Should prerelease tags be added to the head branch of the PR?'
+    required: false
+    default: 'prerelease'
 runs:
   using: 'node16'
   main: 'dist/index.js'
