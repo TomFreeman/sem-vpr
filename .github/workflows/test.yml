@@ -1,6 +1,13 @@
 name: "units-test"
 on:
   pull_request:
+    types:
+      - opened
+      - closed
+      - reopened
+      - synchronize
+      - labeled
+
   push:
     branches:
       - main

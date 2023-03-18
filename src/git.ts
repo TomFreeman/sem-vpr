@@ -46,21 +46,21 @@ export async function tagNewVersion(githubToken: string, version: string) {
     throw new Error(`GITHUB_TOKEN is not set`);
   }
 
-  if (!GITHUB_SHA) {
-    throw new Error(`GITHUB_SHA is not set`);
-  }
-
   const octokit = github.getOctokit(githubToken);
 
   const pr = context.payload as PullRequestEvent
   const owner = pr.repository.owner
   const repo = pr.repository.name
 
-  const target_sha = pr.action === `closed`
-    ? pr.pull_request.head.sha
-    : GITHUB_SHA;
+  const target_sha = pr.pull_request.merged
+    ? pr.pull_request.merge_commit_sha
+    : pr.pull_request.head.sha;
 
-    console.log(`Creating tag ${version} for sha ${target_sha}`)
+  if (!target_sha) {
+    throw new Error(`Could not determine the sha to tag`);
+  }
+
+  console.log(`Creating tag ${version} for sha ${target_sha}`)
   const tagCreateResponse = await octokit.rest.git.createTag({
     ...context.repo,
     tag: version,
@@ -122,5 +122,7 @@ export function shouldProceed(tagPrerelease: boolean) {
     return false;
   }
 
+  console.log(`Proceeding with tagging...`)
+  console.log(`PR: ${pr.number} ${pr.title} ${pr.html_url}`)
   return true;
 }
