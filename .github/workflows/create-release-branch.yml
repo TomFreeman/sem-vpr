@@ -1,0 +1,15 @@
+name: Push Release Branch
+
+on:
+  push:
+    tags:
+      - v*.*.*
+
+jobs:
+  create-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Create release branch
+        run: ./.github/workflows/create-release-branch.sh
