@@ -9,6 +9,10 @@ major=$(echo $current | sed -e "s/^v\([0-9]*\).*/\1/")
 
 npm run prepare
 
+git config user.name github-actions
+git config user.email github-actions@github.com
+
+
 git add dist/index.js --force
 
 git switch -C "v$major"
