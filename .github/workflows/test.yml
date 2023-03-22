@@ -31,6 +31,6 @@ jobs:
     - uses: ./
       with:
         github-token: ${{ secrets.token }}
-        prelease-label: 'prease-release-me'
+        prerelease-label: 'prease-release-me'
         major-release-label: 'major-tom'
         minor-release-label: 'minor-tom'

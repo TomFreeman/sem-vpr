@@ -16,8 +16,8 @@ export function getConfig(): Config {
         majorLabel: core.getInput('major-label', { required: false }) || 'major',
         minorLabel: core.getInput('minor-label', { required: false }) || 'minor',
         prereleaseLabel: core.getInput('prerelease-label', { required: false }) || 'prerelease',
-        tagPrerelease: core.getBooleanInput('tag-prerelease', { required: false }) || false,
-        releaseBranches: JSON.parse(core.getInput('release-branches', { required: false })),
+        tagPrerelease: core.getBooleanInput('tag-prerelease'),
+        releaseBranches: core.getInput('release-branches', { required: false }).split(','),
         token: core.getInput('github-token', { required: true })
     }
 }

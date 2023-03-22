@@ -13,7 +13,7 @@ inputs:
   tag-prerelease:
     description: 'Should prerelease tags be added to the head branch of the PR?'
     required: false
-    default: 'prerelease'
+    default: 'false'
   minor-release-label:
     description: 'The label to use for a minor release'
     required: false
@@ -22,12 +22,12 @@ inputs:
     description: 'The label to use for a major release'
     required: false
     default: 'major'
-  prelease-label:
+  prerelease-label:
     description: 'The label to use to trigger a prerelease'
     required: false
-    default: 'tag-prerelease'
+    default: 'prerelease'
   release-branches:
-    description: 'The branches to release to, as an array of strings'
+    description: 'The branches to release to, as a comma separated list of strings'
     required: false
     default: 'main'
 runs:
