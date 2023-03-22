@@ -1,4 +1,4 @@
-import { Versioner, Settings, isSemVer } from "./versioner";
+import { Versioner, VersionerSettings, isSemVer } from "./versioner";
 import { describe, test, expect } from "@jest/globals";
 
 describe("Versioner components", () => {

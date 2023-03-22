@@ -1,33 +1,30 @@
-import * as core from '@actions/core';
 import * as github from '@actions/github';
-import { Versioner, Settings } from './versioner';
+import * as core from '@actions/core';
+import { Versioner, VersionerSettings } from './versioner';
 import { getTags, getBranchName, getLabels, tagNewVersion, shouldProceed, isPrerelease } from './git';
+import { Config, getConfig } from './config';
 
-function buildSettings(labels: string[], prefix: string, branch: string, tagPrerelease: boolean): Settings {
-  const settings = {} as Settings;
+export function buildSettings(labels: string[], config: Config, branch: string): VersionerSettings {
+  const settings = {} as VersionerSettings;
 
-  if (labels.includes('major')) {
+  if (labels.includes(config.majorLabel)) {
     settings.major = true;
-  } else if (labels.includes('minor')) {
+  } else if (labels.includes(config.minorLabel)) {
     settings.minor = true;
   }
 
-  if (tagPrerelease && isPrerelease()) {
+  if (config.tagPrerelease && isPrerelease(config)) {
     settings.suffix = branch;
   }
 
-  settings.prefix = prefix || 'v';
+  settings.prefix = config.prefix || 'v';
 
   return settings;
 }
 
-function shouldTagPrerelease(labels: string[]): boolean {
-  const prereleaseSetting = core.getInput('tag-prerelease')
-  if (prereleaseSetting) {
-    return labels.includes('pre-release')
-  } else {
-    return core.getBooleanInput('tag-prerelease') || labels.includes('prerelease');
-  }
+export function shouldTagPrerelease(labels: string[], config: Config): boolean {
+  return config.tagPrerelease ||
+    labels.includes(config.prereleaseLabel);
 }
 
 // most @actions toolkit packages have async methods
@@ -38,23 +35,22 @@ async function run() {
       return;
     }
 
+    const config = getConfig();
+
     // Get the tags from the git history
     const tags = await getTags();
-    const prefix = core.getInput('prefix');
     const labels = getLabels();
-    const tagPrerelease = shouldTagPrerelease(labels);
+    const tagPrerelease = shouldTagPrerelease(labels, config);
 
     if (!shouldProceed(tagPrerelease)) {
       return;
     }
 
-    const githubToken = core.getInput('github-token');
     const branch = getBranchName();
     const settings = buildSettings(
       labels,
-      prefix,
-      branch,
-      tagPrerelease);
+      config,
+      branch);
 
     const versioner = new Versioner(
       tags, settings);
@@ -62,7 +58,7 @@ async function run() {
     const newVersion = await versioner.calculateNextVersion();
 
     // Tag the new version
-    await tagNewVersion(githubToken, newVersion);
+    await tagNewVersion(config.token, newVersion);
   } catch (err) {
     console.log("Error: ", err)
     core.setFailed((err as Error).message);

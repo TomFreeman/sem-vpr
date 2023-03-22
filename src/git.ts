@@ -1,7 +1,7 @@
 import { exec, getExecOutput } from "@actions/exec";
+import { Config } from "./config";
 import * as github from "@actions/github";
-import * as core from "@actions/core";
-import { PullRequestEvent, WebhookEvent } from "@octokit/webhooks-types";
+import { PullRequestEvent } from "@octokit/webhooks-types";
 import { RequestError } from "@octokit/request-error";
 
 const context = github.context;
@@ -30,9 +30,11 @@ function getCurrentPR() {
   return pr.pull_request
 }
 
-export function isPrerelease() {
+export function isPrerelease(config: Config) {
   const pr = getCurrentPR()
-  return !(pr.merged && pr.base.repo.default_branch === pr.base.ref)
+  return !(pr.merged &&
+    (pr.base.repo.default_branch === pr.base.ref) ||
+    config.releaseBranches.includes(pr.base.ref))
 }
 
 export function getBranchName() {

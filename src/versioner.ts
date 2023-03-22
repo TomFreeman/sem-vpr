@@ -1,4 +1,4 @@
-export type Settings = {
+export type VersionerSettings = {
   major: boolean,
   minor: boolean,
   prefix: string,
@@ -12,10 +12,10 @@ export const isSemVer = /^[\w]*(\d+\.)(\d+\.)(\d+)($|-[\w]*)/;
 // Versioner wraps the logic for calculating the next version
 export class Versioner {
   tags: string[];
-  settings: Settings;
+  settings: VersionerSettings;
 
   constructor(tags, settings) {
-    settings = settings || {} as Settings;
+    settings = settings || {} as VersionerSettings;
 
     if (!settings.noPrefix && !settings.prefix) {
       settings.prefix = 'v';

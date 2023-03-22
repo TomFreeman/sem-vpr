@@ -14,6 +14,22 @@ inputs:
     description: 'Should prerelease tags be added to the head branch of the PR?'
     required: false
     default: 'prerelease'
+  minor-release-label:
+    description: 'The label to use for a minor release'
+    required: false
+    default: 'minor'
+  major-release-label:
+    description: 'The label to use for a major release'
+    required: false
+    default: 'major'
+  prelease-label:
+    description: 'The label to use to trigger a prerelease'
+    required: false
+    default: 'tag-prerelease'
+  release-branches:
+    description: 'The branches to release to, as an array of strings'
+    required: false
+    default: 'main'
 runs:
   using: 'node16'
   main: 'dist/index.js'
