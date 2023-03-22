@@ -67,9 +67,9 @@ export class Versioner {
 
     // Increment the version
     if (this.settings.major) {
-      return `${major + 1}.${minor}.${patch}`;
+      return `${major + 1}.0.0`;
     } else if (this.settings.minor) {
-      return `${major}.${minor + 1}.${patch}`;
+      return `${major}.${minor + 1}.0`;
     } else {
       return `${major}.${minor}.${patch + 1}`;
     }

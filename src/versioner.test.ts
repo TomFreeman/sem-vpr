@@ -49,6 +49,16 @@ describe("Versioner components", () => {
         const versioner = new Versioner(["v1.0.0"], { minor: true });
         expect(versioner.incrementVersion("1.0.0")).toBe("1.1.0");
     });
+
+    test("Versioner will reset patch version when incrementing minor version", () => {
+        const versioner = new Versioner(["v1.0.0"], { minor: true });
+        expect(versioner.incrementVersion("1.1.9")).toBe("1.2.0");
+    });
+
+    test("Versioner will reset patch and minor version when incrementing major version", () => {
+        const versioner = new Versioner(["v1.0.0"], { major: true });
+        expect(versioner.incrementVersion("1.1.9")).toBe("2.0.0");
+    });
 });
 
 describe("Versioner e2e", () => {
