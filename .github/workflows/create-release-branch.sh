@@ -18,3 +18,5 @@ git add dist/index.js --force
 git commit -m "Build for release $current"
 
 git push -u origin "v$major" --force
+
+gh release create "$current-release" --title "$current" --generate-notes --target "v$major" dist/index.js action.yml
