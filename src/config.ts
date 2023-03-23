@@ -13,8 +13,8 @@ export type Config = {
 export function getConfig(): Config {
     return {
         prefix: core.getInput('prefix', { required: false }),
-        majorLabel: core.getInput('major-label', { required: false }) || 'major',
-        minorLabel: core.getInput('minor-label', { required: false }) || 'minor',
+        majorLabel: core.getInput('major-release-label', { required: false }) || 'major',
+        minorLabel: core.getInput('minor-release-label', { required: false }) || 'minor',
         prereleaseLabel: core.getInput('prerelease-label', { required: false }) || 'prerelease',
         tagPrerelease: core.getBooleanInput('tag-prerelease'),
         releaseBranches: core.getInput('release-branches', { required: false }).split(','),
