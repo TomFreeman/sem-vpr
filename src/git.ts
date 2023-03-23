@@ -33,8 +33,8 @@ function getCurrentPR() {
 export function isPrerelease(config: Config) {
   const pr = getCurrentPR()
   return !(pr.merged &&
-    (pr.base.repo.default_branch === pr.base.ref) ||
-    config.releaseBranches.includes(pr.base.ref))
+    (pr.base.repo.default_branch === pr.base.ref ||
+    config.releaseBranches.includes(pr.base.ref)))
 }
 
 export function getBranchName() {
