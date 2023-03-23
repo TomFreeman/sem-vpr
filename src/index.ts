@@ -13,7 +13,7 @@ export function buildSettings(labels: string[], config: Config, branch: string):
     settings.minor = true;
   }
 
-  if (config.tagPrerelease && isPrerelease(config)) {
+  if (shouldTagPrerelease(labels, config) && isPrerelease(config)) {
     settings.suffix = branch;
   }
 
