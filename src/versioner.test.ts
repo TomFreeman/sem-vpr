@@ -80,8 +80,41 @@ describe("Versioner e2e", () => {
         expect(version).toBe("v1.0.1");
     });
 
-    test("Versioner will use pre-release labels"   , async () => {
+    test("Versioner will use pre-release labels", async () => {
         const versioner = new Versioner(["v1.0.0"], { suffix: "preview" });
+        const version = await versioner.calculateNextVersion();
+
+        expect(version).toBe("v1.0.1-preview");
+    })
+
+    test("Versioner will ignore with pre-release labels", async () => {
+        const versioner = new Versioner(["v1.0.0-release"], {});
+        const version = await versioner.calculateNextVersion();
+
+        expect(version).toBe("v0.0.1");
+    })
+
+    test("Versioner will ignore pre-release labels when creating a preview release", async () => {
+        const versioner = new Versioner(["v1.0.0-release"], { suffix: "preview" });
+        const version = await versioner.calculateNextVersion();
+
+        expect(version).toBe("v0.0.1-preview");
+    })
+
+    test("CI Failure bug", async () => {
+        const versioner = new Versioner(["v0.0.1",
+            "v0.0.1-release",
+            "v0.0.2",
+            "v0.0.3",
+            "v0.1.3",
+            "v0.1.4",
+            "v0.1.5",
+            "v0.1.6",
+            "v0.1.7-17-make-everything-configurable",
+            "v0.2.0-17-make-everything-configurable",
+            "v1.0.0",
+            "v1.0.0-17-make-everything-configurable",
+            "v1.0.0-release"], { suffix: "preview" });
         const version = await versioner.calculateNextVersion();
 
         expect(version).toBe("v1.0.1-preview");

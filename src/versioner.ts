@@ -38,23 +38,21 @@ export class Versioner {
   }
 
   getLatestTag() {
-    const semverTags = (this.tags || []).map(tag =>
-      {
-        if (tag.startsWith(this.settings.prefix)) {
-          tag = tag.substring(this.settings.prefix.length);
-        }
+    const semverTags = (this.tags || []).map(tag => {
+      if (tag.startsWith(this.settings.prefix)) {
+        tag = tag.substring(this.settings.prefix.length);
+      }
 
-        return semver.clean(tag)
-      }).filter(tag => tag);
+      return semver.clean(tag)
+    }).filter(tag => tag && !tag.includes('-'));
 
     if (!semverTags || semverTags.length === 0) {
       console.log('No tags found, using 0.0.0');
       return '0.0.0';
     } else {
       // Filter out all the prerelease tags and sort them
-      var filteredTags = this.tags.filter(tag => !tag.includes('-'));
-      filteredTags.sort(semver.compare);
-      var tag = filteredTags[filteredTags.length - 1];
+      semverTags.sort(semver.compare);
+      var tag = semverTags[semverTags.length - 1];
 
       if (tag.startsWith(this.settings.prefix)) {
         tag = tag.substring(this.settings.prefix.length);
