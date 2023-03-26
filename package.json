@@ -29,7 +29,8 @@
     "@actions/exec": "^1.1.1",
     "@actions/github": "^5.1.1",
     "@octokit/webhooks-schemas": "^6.10.0",
-    "@octokit/webhooks-types": "^6.10.0"
+    "@octokit/webhooks-types": "^6.10.0",
+    "semver": "^7.3.8"
   },
   "devDependencies": {
     "@types/jest": "^29.5.0",

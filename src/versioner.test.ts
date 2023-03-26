@@ -1,15 +1,7 @@
-import { Versioner, VersionerSettings, isSemVer } from "./versioner";
+import { Versioner, VersionerSettings } from "./versioner";
 import { describe, test, expect } from "@jest/globals";
 
 describe("Versioner components", () => {
-    test("Regex is valid", () => {
-        expect(isSemVer.test("1.0.0")).toBe(true);
-        expect(isSemVer.test("1.0.0-preview")).toBe(true);
-        expect(isSemVer.test("v1.0.0-preview.1")).toBe(true);
-        expect(isSemVer.test("blah v1.0.0-preview")).toBe(false);
-        expect(isSemVer.test("nope")).toBe(false);
-    });
-
     test("Versioner should use 0.0.0 if tags is null", () => {
         const versioner = new Versioner(null, null);
         expect(versioner.getLatestTag()).toBe("0.0.0");
@@ -38,6 +30,11 @@ describe("Versioner components", () => {
     test("Versioner will ignore prerelease tags", () => {
         const versioner = new Versioner(["v1.0.0", "v1.4.5", "v1.9.9-preview"], null);
         expect(versioner.getLatestTag()).toBe("1.4.5");
+    });
+
+    test("Versioner will sort correctly", () => {
+        const versioner = new Versioner(["v1.0.0", "v1.9.0", "v1.10.1", "v1.11.0"], null);
+        expect(versioner.getLatestTag()).toBe("1.11.0");
     });
 
     test("Versioner will increment the major version", () => {

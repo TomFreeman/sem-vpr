@@ -1,3 +1,5 @@
+import * as semver from 'semver'
+
 export type VersionerSettings = {
   major: boolean,
   minor: boolean,
@@ -5,9 +7,6 @@ export type VersionerSettings = {
   suffix: string,
   noPrefix: boolean,
 }
-
-// Semver regex, anything that contains three numbers seperated by dots
-export const isSemVer = /^[\w]*(\d+\.)(\d+\.)(\d+)($|-[\w]*)/;
 
 // Versioner wraps the logic for calculating the next version
 export class Versioner {
@@ -39,7 +38,14 @@ export class Versioner {
   }
 
   getLatestTag() {
-    const semverTags = (this.tags || []).filter(tag => isSemVer.test(tag));
+    const semverTags = (this.tags || []).map(tag =>
+      {
+        if (tag.startsWith(this.settings.prefix)) {
+          tag = tag.substring(this.settings.prefix.length);
+        }
+
+        return semver.clean(tag)
+      }).filter(tag => tag);
 
     if (!semverTags || semverTags.length === 0) {
       console.log('No tags found, using 0.0.0');
@@ -47,7 +53,7 @@ export class Versioner {
     } else {
       // Filter out all the prerelease tags and sort them
       var filteredTags = this.tags.filter(tag => !tag.includes('-'));
-      filteredTags.sort();
+      filteredTags.sort(semver.compare);
       var tag = filteredTags[filteredTags.length - 1];
 
       if (tag.startsWith(this.settings.prefix)) {
@@ -60,28 +66,25 @@ export class Versioner {
 
   incrementVersion(latestTag) {
     // Split the latest tag into its parts
-    const parts = latestTag.split('.');
-    const major = parseInt(parts[0]);
-    const minor = parseInt(parts[1]);
-    const patch = parseInt(parts[2]);
+    const current = semver.parse(latestTag);
 
     // Increment the version
     if (this.settings.major) {
-      return `${major + 1}.0.0`;
+      return semver.inc(current, 'major');
     } else if (this.settings.minor) {
-      return `${major}.${minor + 1}.0`;
+      return semver.inc(current, 'minor')
     } else {
-      return `${major}.${minor}.${patch + 1}`;
+      return semver.inc(current, 'patch');
     }
   }
 
   async calculateNextVersion() {
-      // Get the latest tag
-      const latestTag = this.getLatestTag();
+    // Get the latest tag
+    const latestTag = this.getLatestTag();
 
-      // Calculate the new version
-      const newVersion = await this.incrementVersion(latestTag);
+    // Calculate the new version
+    const newVersion = await this.incrementVersion(latestTag);
 
-      return this.buildTag(newVersion)
+    return this.buildTag(newVersion)
   }
 }
