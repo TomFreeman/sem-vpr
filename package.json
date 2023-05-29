@@ -28,7 +28,7 @@
     "@actions/core": "^1.10.0",
     "@actions/exec": "^1.1.1",
     "@actions/github": "^5.1.1",
-    "@octokit/webhooks-schemas": "^6.10.0",
+    "@octokit/webhooks-schemas": "^7.0.2",
     "@octokit/webhooks-types": "^6.10.0",
     "semver": "^7.3.8"
   },
