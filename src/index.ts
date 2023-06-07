@@ -27,6 +27,10 @@ export function shouldTagPrerelease(labels: string[], config: Config): boolean {
     labels.includes(config.prereleaseLabel);
 }
 
+export function shouldSkipRelease(labels: string[], config: Config): boolean {
+  return labels.includes(config.skipReleaseLabel);
+}
+
 // most @actions toolkit packages have async methods
 async function run() {
   try {
@@ -41,8 +45,9 @@ async function run() {
     const tags = await getTags();
     const labels = getLabels();
     const tagPrerelease = shouldTagPrerelease(labels, config);
+    const skipRelease = shouldSkipRelease(labels, config);
 
-    if (!shouldProceed(tagPrerelease)) {
+    if (skipRelease || !shouldProceed(tagPrerelease)) {
       return;
     }
 

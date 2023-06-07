@@ -1,4 +1,4 @@
-import { shouldTagPrerelease, buildSettings } from "./index";
+import { shouldTagPrerelease, buildSettings, shouldSkipRelease } from "./index";
 import { Config, getConfig } from "./config";
 
 describe("Tag prerelease", () => {
@@ -38,6 +38,26 @@ describe("Tag prerelease", () => {
 
         const out = shouldTagPrerelease(["prerelease"], config);
         expect(out).toBe(true);
+    });
+
+    test("Should skip tagging if skip-release label is present", async () => {
+        const config = {
+            tagPrerelease: false,
+            skipReleaseLabel: "skip-release",
+        } as Config;
+
+        const out = shouldSkipRelease(["skip-release"], config);
+        expect(out).toBe(true);
+    });
+
+    test("Should not skip tagging if skip-release label is absent", async () => {
+        const config = {
+            tagPrerelease: false,
+            skipReleaseLabel: "skip-release",
+        } as Config;
+
+        const out = shouldSkipRelease(["some-other-tag"], config);
+        expect(out).toBe(false);
     });
 });
 
