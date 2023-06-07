@@ -6,6 +6,7 @@ export type Config = {
     minorLabel: string;
     prereleaseLabel: string;
     tagPrerelease: boolean;
+    skipReleaseLabel: string;
     releaseBranches: string[];
     token: string;
 }
@@ -17,6 +18,7 @@ export function getConfig(): Config {
         minorLabel: core.getInput('minor-release-label', { required: false }) || 'minor',
         prereleaseLabel: core.getInput('prerelease-label', { required: false }) || 'prerelease',
         tagPrerelease: core.getBooleanInput('tag-prerelease'),
+        skipReleaseLabel: core.getInput('skip-release-label', { required: false }) || 'skip-release',
         releaseBranches: core.getInput('release-branches', { required: false }).split(','),
         token: core.getInput('github-token', { required: true })
     }
