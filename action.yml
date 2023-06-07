@@ -26,6 +26,10 @@ inputs:
     description: 'The label to use to trigger a prerelease'
     required: false
     default: 'prerelease'
+  skip-release-label:
+    description: 'The label to use to skip a release'
+    required: false
+    default: 'skip-release'
   release-branches:
     description: 'The branches to release to, as a comma separated list of strings'
     required: false
@@ -36,4 +40,5 @@ runs:
 
 branding:
   icon: 'tag'
+
   color: 'green'
