@@ -12,14 +12,14 @@ jobs:
   create-branch:
     runs-on: ubuntu-latest
     env:
-      GH_TOKEN: ${{ secrets.token }}
+      GH_TOKEN: ${{ secrets.personal_token }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.token }}
+          token: ${{ secrets.personal_token }}
 
       - name: Set Node.js 16.x
-        uses: actions/setup-node@v3.6.0
+        uses: actions/setup-node@v3.8.1
         with:
           node-version: 16.x
 
