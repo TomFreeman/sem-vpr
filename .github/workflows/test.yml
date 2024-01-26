@@ -30,7 +30,7 @@ jobs:
     - run: npm ci
     - uses: ./
       with:
-        github-token: ${{ secrets.TOKEN }}
+        github-token: ${{ secrets.personal_token }}
         prerelease-label: 'prease-release-me'
         major-release-label: 'major-tom'
         minor-release-label: 'minor-tom'
