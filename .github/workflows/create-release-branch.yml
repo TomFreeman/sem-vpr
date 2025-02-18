@@ -19,7 +19,7 @@ jobs:
           token: ${{ secrets.personal_token }}
 
       - name: Set Node.js 16.x
-        uses: actions/setup-node@v4.0.2
+        uses: actions/setup-node@v4.2.0
         with:
           node-version: 16.x
 
@@ -28,5 +28,4 @@ jobs:
 
       - name: Create release branch
         run: ./.github/workflows/create-release-branch.sh
-
 
